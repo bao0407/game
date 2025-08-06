@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chibi Bat Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f0f8ff;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+
+    #game-container {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .chibi {
+      position: absolute;
+      width: 150px;
+    }
+
+    #girl {
+      left: 20px;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    #boy {
+      right: 30px;
+      bottom: 0;
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+
+    #bat {
+      position: absolute;
+      width: 280px;
+      bottom: 200px;
+      left: 100px;
+      transform-origin: 5% 60%;
+      transition: transform 0.2s ease;
+      z-index: 1;
+    }
+
+    .hit {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <img id="girl" class="chibi" src="chibi_girl.png" alt="Chibi Girl" />
+    <img id="bat" src="bat.png" alt="Bat" />
+    <img
+      id="boy"
+      class="chibi"
+      src="chibi_boy.png"
+      alt="Chibi Boy"
+      data-default="chibi_boy.png"
+      data-hit="chibi_boy_hit.png"
+    />
+  </div>
+
+  <audio id="bonk-sound" src="bonk.mp3"></audio>
+
+  <script>
+    const bat = document.getElementById('bat');
+    const boy = document.getElementById('boy');
+    const bonk = document.getElementById('bonk-sound');
+
+    document.getElementById('game-container').addEventListener('click', () => {
+      bat.style.transform = 'rotate(-50deg)';
+      boy.classList.add('hit');
+      boy.src = boy.dataset.hit;
+
+      bonk.currentTime = 0;
+      bonk.play();
+
+      setTimeout(() => {
+        bat.style.transform = 'rotate(30deg)';
+        boy.classList.remove('hit');
+        boy.src = boy.dataset.default;
+      }, 400);
+    });
+  </script>
+</body>
+</html>
